@@ -59,14 +59,17 @@
         state: present
 
     - name: Add jenkins gpg
-      ansible.builtin.apt_key: 
+      ansible.builtin.get_url: 
         url: https://pkg.jenkins.io/debian-stable/jenkins.io-2023.key
-        state: present
+        dest: /etc/apt/keyrings/jenkins.asc
+        mode: "0644"
 
     - name: Add jenkins repo
       ansible.builtin.apt_repository:
-        repo: "deb https://pkg.jenkins.io/debian-stable binary/"
+        repo: "deb [signed-in=/etc/apt/keyrings/jenkins.asc] https://pkg.jenkins.io/debian-stable binary/"
         state: present
+        filename: jenkins
+        update_cache: yes
 
     - name: Install jenkins
       ansible.builtin.apt:
