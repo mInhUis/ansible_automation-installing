@@ -6,7 +6,7 @@
 
   tasks:
     - name: Update apt cache
-      ansible_builtin.apt:
+      ansible.builtin.apt:
         update_cache: true
 
 
@@ -81,7 +81,7 @@
       ansible.builtin.user:
         name: "{{ item }}" 
         groups: docker
-        append: yes
+        append: true
       loop:
         - ubuntu
         - jenkins 
