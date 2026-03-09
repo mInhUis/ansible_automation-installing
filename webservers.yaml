@@ -62,7 +62,6 @@
       ansible.builtin.apt_key: 
         url: https://pkg.jenkins.io/debian-stable/jenkins.io-2023.key
         state: present
-        update_cache: true
 
     - name: Add jenkins repo
       ansible.builtin.apt_repository:
