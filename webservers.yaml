@@ -32,9 +32,13 @@
         dest: /etc/apt/keyrings/docker.asc
         mode: "0644"
 
+    - name: Dearmor docker GPG key
+      ansible.builtin.shell: gpg --dearmor < /etc/apt/keyrings/docker.asc > /etc/apt/keyrings/docker.gpg
+      creates: /etc/apt/keyrings/docker.gpg
+
     - name: Add docker repository 
       ansible.builtin.apt_repository:
-        repo: "deb [arch={{ ansible_architecture }} signed-by=/etc/apt/keyrings/docker.asc] \
+        repo: "deb [arch=amd64 signed-by=/etc/apt/keyrings/docker.gpg] \
               https://download.docker.com/linux/ubuntu {{ ansible_distribution_release }} stable"
         state: present
         filename: docker
@@ -62,13 +66,13 @@
     - name: Add jenkins gpg
       ansible.builtin.apt_key: 
         url: https://pkg.jenkins.io/debian-stable/jenkins.io-2023.key
-        state: latest
-        udpate_cache: true
+        state: present
+        update_cache: true
 
     - name: Add jenkins repo
       ansible.builtin.apt_repository:
         repo: deb https://pkg.jenkins.io/debian-stable binary/
-        state: latest
+        state: present
 
     - name: Install jenkins
       ansible.builtin.apt:
