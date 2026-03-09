@@ -72,7 +72,7 @@
 
     - name: Add jenkins repo
       ansible.builtin.apt_repository:
-        repo: "deb [signed-in=/etc/apt/keyrings/jenkins.asc] https://pkg.jenkins.io/debian-stable binary/"
+        repo: "deb [signed-by=/etc/apt/keyrings/jenkins.asc] https://pkg.jenkins.io/debian-stable binary/"
         state: present
         filename: jenkins
         update_cache: yes
