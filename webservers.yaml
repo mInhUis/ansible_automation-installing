@@ -2,15 +2,15 @@
 - name: Install software
   hosts: local
   connection: localhost
-  become: yes
+  become: true
 
   tasks:
     - name: Update apt cache
       ansible_builtin.apt:
-        update_cache: yes
+        update_cache: true
 
 
-    - name: ensure dependencies are installed
+    - name: Ensure dependencies are installed
       ansible.builtin.package:
         name: 
           - bc
@@ -27,21 +27,22 @@
         mode: "0755"  
 
     - name: Add docker GPG Key
-      apt_key:
+      ansible.builtin.apt_key:
         url: https://download.docker.com/linux/ubuntu/gpg
         dest: /etc/apt/keyrings/docker.asc
         status: present
         mode: "0644"
 
     - name: Add docker repository 
-      apt_repository:
-        repo: "deb [arch={{ ansible_architecture }} signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu {{ ansible_distribution_release }} stable"
+      ansible.builtin.apt_repository:
+        repo: "deb [arch={{ ansible_architecture }} signed-by=/etc/apt/keyrings/docker.asc] \
+              https://download.docker.com/linux/ubuntu {{ ansible_distribution_release }} stable"
         state: present
         filename: docker
     
     - name: Update apt cache  after adding docker repository
       ansible.builtin.apt:
-        update_cache: yes
+        update_cache: true
 
     - name: Add docker Engine
       ansible.builtin.package:
@@ -54,30 +55,30 @@
         state: present
 
   #2. install jenkins
-    - name: install java 17
-      apt:
+    - name: Install java 17
+      ansible.builtin.apt:
         name: openjdk-17-jdk
         state: present
 
-    - name: add jenkins gpg
-      apt_key: 
+    - name: Add jenkins gpg
+      ansible.builtin.apt_key: 
         url: https://pkg.jenkins.io/debian-stable/jenkins.io-2023.key
         state: latest
         udpate_cache: true
 
-    - name: add jenkins repo
-      apt_repository:
+    - name: Add jenkins repo
+      ansible.builtin.apt_repository:
         repo: deb https://pkg.jenkins.io/debian-stable binary/
         state: latest
 
-    - name: install jenkins
-      apt:
+    - name: Install jenkins
+      ansible.builtin.apt:
         name: jenkins
         state: present
 
 #3  Permissions & Services
-    - name: add ubuntu and jenkins to docker group
-      user:
+    - name: Add ubuntu and jenkins to docker group
+      ansible.builtin.user:
         name: "{{ item }}" 
         groups: docker
         append: yes
@@ -85,10 +86,10 @@
         - ubuntu
         - jenkins 
 
-    - name: ensure things doing right
-      systemd: 
+    - name: Ensure things doing right
+      ansible.builtin.systemd: 
         name: "{{ item }}"
         state: started
-        enabled: yes
+        enabled: true
       loop: [docker, jenkins]
 
