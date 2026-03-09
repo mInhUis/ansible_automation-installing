@@ -39,12 +39,12 @@
         state: present
         filename: docker
     
-    - name: Update apt cache  after adding docker repository
+    - name: Update apt cache after adding docker repository
       ansible.builtin.apt:
         update_cache: true
 
     - name: Add docker Engine
-      ansible.builtin.package:
+      ansible.builtin.apt:
         name:
           - docker-ce
           - docker-ce-cli
