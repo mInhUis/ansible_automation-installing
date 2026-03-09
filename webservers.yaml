@@ -18,7 +18,7 @@
           - expect
           - git
           - ca-certificates
-        status: present
+        state: present
 
     - name: Add docker gpg key path
       ansible.builtin.file:
@@ -30,7 +30,7 @@
       ansible.builtin.apt_key:
         url: https://download.docker.com/linux/ubuntu/gpg
         dest: /etc/apt/keyrings/docker.asc
-        status: present
+        state: present
         mode: "0644"
 
     - name: Add docker repository 
