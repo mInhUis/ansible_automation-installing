@@ -67,7 +67,6 @@
       ansible.builtin.apt_repository:
         repo: "deb https://pkg.jenkins.io/debian-stable binary/"
         state: present
-        become: true
 
     - name: Install jenkins
       ansible.builtin.apt:
