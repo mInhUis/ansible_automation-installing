@@ -65,13 +65,13 @@
 
     - name: Add jenkins repo
       ansible.builtin.apt_repository:
-        repo: deb https://pkg.jenkins.io/debian-stable binary/
+        repo: "deb https://pkg.jenkins.io/debian-stable binary/"
         state: present
 
     - name: Install jenkins
       ansible.builtin.apt:
         name: jenkins
-        state: present
+        update_cache: true
 
 #3  Permissions & Services
     - name: Add ubuntu and jenkins to docker group
