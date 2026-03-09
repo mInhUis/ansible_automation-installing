@@ -80,6 +80,7 @@
     - name: Install jenkins
       ansible.builtin.apt:
         name: jenkins
+        state: present
         update_cache: true
 
 #3  Permissions & Services
